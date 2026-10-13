@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>مركز المراسلات — NextStep AI</title>
+<link rel="icon" href="assets/nextstep-seal.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Cinzel:wght@600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#ffffff; --soft:#f4f8fd; --soft2:#e9f2fd; --navy:#0D1B3D; --navy-mid:#16295c;
+  --blue:#146EF5; --cyan:#35D6F5; --sky:#8FD3F4;
+  --line:#dbe6f3; --muted:#5d6f8c; --text:#1a2744;
+  --ok:#12a150; --warn:#c98a00; --bad:#d6293e;
+  --shadow:0 10px 34px rgba(13,27,61,.07);
+  --font-ar:'Cairo',sans-serif; --font-display:'Cinzel','Cairo',serif; --font-mono:'Space Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--font-ar);color:var(--text);background:var(--bg);min-height:100vh;line-height:1.7;}
+a{color:var(--blue);text-decoration:none;}
+button{font-family:inherit;cursor:pointer;}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px;}
+.hidden{display:none!important;}
+
+/* ---------- login ---------- */
+#loginView{min-height:100vh;display:grid;place-items:center;padding:24px;position:relative;overflow:hidden;
+  background:radial-gradient(ellipse 80% 60% at 50% 0%,var(--soft2),#fff 70%);}
+.login-card{position:relative;z-index:2;width:100%;max-width:430px;background:#fff;border:1px solid var(--line);border-radius:28px;padding:34px 32px;box-shadow:var(--shadow);text-align:center;}
+.login-card .seal{width:150px;height:150px;object-fit:contain;margin:-6px auto 6px;display:block;animation:float 5s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0) rotateY(0)}50%{transform:translateY(-8px) rotateY(10deg)}}
+.login-card h1{font-size:1.45rem;font-weight:800;color:var(--navy);margin-bottom:4px;}
+.login-card p.sub{color:var(--muted);font-size:.9rem;margin-bottom:22px;}
+.login-card .field{text-align:right;margin-bottom:14px;}
+.login-card .btn{width:100%;padding:13px;}
+.login-links{margin-top:14px;font-size:.84rem;}
+.login-err{background:#fdecef;color:var(--bad);border-radius:12px;padding:9px 14px;font-size:.86rem;margin-bottom:14px;text-align:right;}
+.login-sign{margin-top:22px;font-size:.84rem;color:var(--muted);}
+.login-sign b{color:var(--navy);}
+#bgstage{position:absolute;inset:0;width:100%;height:100%;opacity:.55;}
+
+/* ---------- shell ---------- */
+.wrap{max-width:1260px;margin:0 auto;padding:20px 20px 60px;}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:20px;}
+.brand{display:flex;align-items:center;gap:12px;}
+.brand img{width:54px;height:54px;object-fit:contain;}
+.brand b{font-family:var(--font-display);font-size:1.15rem;color:var(--navy);display:block;line-height:1.2;}
+.brand span{font-size:.8rem;color:var(--muted);}
+.top-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+.chip-btn{background:#fff;border:1px solid var(--line);color:var(--navy);padding:8px 16px;border-radius:30px;font-size:.86rem;font-weight:600;transition:.2s;}
+.chip-btn:hover{border-color:var(--blue);color:var(--blue);background:var(--soft);}
+.smtp-chip{display:inline-flex;align-items:center;gap:8px;font-size:.8rem;font-weight:600;padding:7px 14px;border-radius:30px;background:var(--soft);border:1px solid var(--line);color:var(--muted);}
+.smtp-chip i{width:9px;height:9px;border-radius:50%;background:#aab7cc;}
+.smtp-chip.ok{color:var(--ok);} .smtp-chip.ok i{background:var(--ok);box-shadow:0 0 0 4px rgba(18,161,80,.15);}
+.smtp-chip.bad{color:var(--bad);} .smtp-chip.bad i{background:var(--bad);}
+.who{font-size:.8rem;color:var(--muted);direction:ltr;}
+
+/* ---------- hero ---------- */
+.hero{position:relative;border:1px solid var(--line);border-radius:28px;overflow:hidden;margin-bottom:18px;
+  background:linear-gradient(135deg,#ffffff 0%,var(--soft) 55%,var(--soft2) 100%);min-height:310px;display:grid;grid-template-columns:1.1fr .9fr;align-items:center;box-shadow:var(--shadow);}
+.hero-text{padding:38px 44px;position:relative;z-index:2;}
+.hero-text h1{font-size:clamp(1.7rem,3.2vw,2.5rem);font-weight:800;line-height:1.35;margin-bottom:10px;color:var(--navy);}
+.hero-text h1 em{font-style:normal;color:var(--blue);}
+.hero-text p{color:var(--muted);max-width:520px;font-size:.98rem;}
+.signature{display:inline-flex;align-items:center;gap:10px;margin-top:20px;padding:9px 18px;border-radius:40px;border:1px solid var(--line);background:#fff;font-weight:700;font-size:.92rem;color:var(--navy);}
+.signature i{width:9px;height:9px;border-radius:50%;background:var(--blue);box-shadow:0 0 0 4px rgba(20,110,245,.15);}
+.hero-3d{position:relative;height:100%;min-height:310px;}
+#stage{width:100%;height:100%;min-height:310px;display:block;}
+
+/* motivation */
+.boost{display:flex;align-items:center;gap:14px;background:linear-gradient(90deg,var(--navy),var(--navy-mid));color:#fff;border-radius:18px;padding:14px 22px;margin-bottom:18px;min-height:58px;}
+.boost .spark{font-size:1.4rem;}
+.boost p{font-weight:600;font-size:.98rem;flex:1;transition:opacity .4s;}
+.boost small{color:var(--sky);font-family:var(--font-mono);font-size:.74rem;white-space:nowrap;}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:24px;perspective:900px;}
+.stat{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px 18px;transform-style:preserve-3d;transition:transform .15s ease-out,border-color .2s,box-shadow .2s;will-change:transform;box-shadow:var(--shadow);}
+.stat:hover{border-color:var(--blue);box-shadow:0 14px 36px rgba(20,110,245,.14);}
+.stat small{display:block;color:var(--muted);font-size:.8rem;}
+.stat b{font-family:var(--font-mono);font-size:1.9rem;display:block;line-height:1.3;color:var(--blue);transform:translateZ(24px);}
+.stat.ok b{color:var(--ok);} .stat.bad b{color:var(--bad);} .stat.navy b{color:var(--navy);}
+
+/* layout */
+.grid{display:grid;grid-template-columns:1.25fr .95fr;gap:22px;align-items:start;}
+.panel{background:#fff;border:1px solid var(--line);border-radius:22px;padding:24px;margin-bottom:22px;box-shadow:var(--shadow);}
+.panel h2{font-size:1.15rem;font-weight:800;margin-bottom:4px;display:flex;align-items:center;gap:10px;color:var(--navy);}
+.panel h2 .n{font-family:var(--font-mono);width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.8rem;background:var(--blue);color:#fff;font-weight:700;}
+.panel .sub{color:var(--muted);font-size:.86rem;margin-bottom:16px;}
+
+.tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+.tab{background:#fff;border:1px solid var(--line);color:var(--muted);padding:8px 18px;border-radius:30px;font-size:.88rem;font-weight:700;transition:.2s;}
+.tab:hover{border-color:var(--blue);color:var(--blue);}
+.tab[aria-selected="true"]{background:var(--blue);color:#fff;border-color:var(--blue);}
+.tab-body{display:none;} .tab-body.active{display:block;}
+
+label.f{display:block;font-size:.84rem;color:var(--muted);margin-bottom:6px;font-weight:600;}
+input[type=text],input[type=email],input[type=number],input[type=password],textarea,select{
+  width:100%;background:#fff;border:1px solid var(--line);color:var(--text);border-radius:12px;padding:11px 14px;font-family:inherit;font-size:.95rem;transition:border-color .2s,box-shadow .2s;}
+input:focus,textarea:focus,select:focus{border-color:var(--blue);outline:none;box-shadow:0 0 0 4px rgba(20,110,245,.12);}
+input[dir=ltr],.ltr{direction:ltr;text-align:left;}
+textarea{resize:vertical;min-height:120px;}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+.row3{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:12px;margin-bottom:12px;}
+.btn{border:none;border-radius:12px;padding:11px 20px;font-weight:700;font-size:.9rem;transition:transform .15s,box-shadow .2s,background .2s;}
+.btn:active{transform:scale(.97);}
+.btn.primary{background:linear-gradient(135deg,var(--blue),#2f86ff);color:#fff;box-shadow:0 8px 22px rgba(20,110,245,.28);}
+.btn.primary:hover{box-shadow:0 10px 30px rgba(20,110,245,.4);}
+.btn.ghost{background:var(--soft);color:var(--navy);border:1px solid var(--line);}
+.btn.ghost:hover{border-color:var(--blue);color:var(--blue);}
+.btn.danger{background:#fdecef;color:var(--bad);border:1px solid #f6c5cc;}
+.btn:disabled{opacity:.45;cursor:not-allowed;}
+.btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;}
+
+.drop{border:2px dashed #b9cde6;border-radius:18px;padding:34px 20px;text-align:center;color:var(--muted);transition:.2s;cursor:pointer;background:var(--soft);}
+.drop.over,.drop:hover{border-color:var(--blue);background:var(--soft2);color:var(--navy);}
+.drop b{display:block;color:var(--navy);font-size:1.05rem;margin-bottom:4px;}
+.hint{font-size:.8rem;color:var(--muted);margin-top:10px;}
+.dbbox{background:var(--soft);border:1px solid var(--line);border-radius:16px;padding:16px;margin-top:14px;}
+.dbbox h4{font-size:.92rem;color:var(--navy);margin-bottom:10px;}
+
+/* table */
+.tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:20px 0 12px;}
+.tools input[type=text]{flex:1;min-width:160px;padding:9px 14px;}
+.tools .btn{padding:9px 14px;font-size:.84rem;}
+.tbl-wrap{max-height:340px;overflow:auto;border:1px solid var(--line);border-radius:14px;}
+table{width:100%;border-collapse:collapse;font-size:.9rem;}
+th{position:sticky;top:0;background:var(--soft2);text-align:right;padding:10px 12px;font-weight:700;font-size:.82rem;color:var(--navy);z-index:1;}
+td{padding:6px 10px;border-top:1px solid #edf2f9;vertical-align:middle;}
+td input[type=text],td input[type=email]{padding:7px 10px;border-radius:8px;background:transparent;border-color:transparent;}
+td input:hover{border-color:var(--line);} td input:focus{background:#fff;}
+.badge{display:inline-block;padding:2px 12px;border-radius:20px;font-size:.76rem;font-weight:700;white-space:nowrap;}
+.b-pending{background:var(--soft2);color:var(--blue);} .b-sending{background:#fff4d6;color:var(--warn);}
+.b-sent{background:#dcf5e7;color:var(--ok);} .b-failed,.b-invalid{background:#fdecef;color:var(--bad);}
+.x{background:none;border:none;color:var(--muted);font-size:1rem;padding:4px 8px;border-radius:8px;} .x:hover{color:var(--bad);background:#fdecef;}
+.empty{padding:34px;text-align:center;color:var(--muted);}
+
+/* editor */
+.toolbar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;}
+.tb{background:var(--soft);border:1px solid var(--line);color:var(--navy);border-radius:9px;padding:5px 12px;font-size:.84rem;font-weight:600;}
+.tb:hover{border-color:var(--blue);color:var(--blue);}
+#editor{min-height:230px;max-height:420px;overflow:auto;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;line-height:1.95;font-size:.98rem;}
+#editor:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 4px rgba(20,110,245,.12);}
+#editor:empty:before{content:attr(data-ph);color:#8d9bb3;}
+.tpls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.tpl{background:#fff;border:1px solid var(--line);color:var(--blue);padding:6px 14px;border-radius:30px;font-size:.82rem;font-weight:600;} .tpl:hover{border-color:var(--blue);background:var(--soft);}
+.sigbox{margin-top:12px;padding:12px 16px;border-radius:12px;background:var(--soft);border:1px dashed #b9cde6;font-size:.86rem;color:var(--muted);}
+.sigbox b{color:var(--navy);}
+.toggle{display:flex;align-items:center;gap:10px;font-size:.88rem;margin:12px 0;cursor:pointer;}
+.toggle input{accent-color:var(--blue);width:17px;height:17px;}
+
+/* preview */
+.sticky{position:sticky;top:16px;}
+.device{border:1px solid var(--line);border-radius:18px;overflow:hidden;background:#fff;}
+.device-bar{background:var(--soft2);padding:8px 14px;font-size:.78rem;color:var(--muted);display:flex;justify-content:space-between;gap:10px;}
+#preview{width:100%;height:520px;border:0;display:block;background:#eef3f8;}
+
+/* send */
+.progress{height:10px;border-radius:10px;background:var(--soft2);overflow:hidden;margin:14px 0 6px;}
+.progress div{height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--cyan));transition:width .4s;}
+.pinfo{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:.76rem;color:var(--muted);}
+.log{max-height:170px;overflow:auto;margin-top:14px;font-family:var(--font-mono);font-size:.74rem;direction:ltr;text-align:left;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--soft);}
+.log div{padding:2px 0;} .log .ok{color:var(--ok);} .log .bad{color:var(--bad);} .log .inf{color:var(--blue);}
+.mode-tag{display:inline-block;font-size:.76rem;padding:2px 12px;border-radius:20px;margin-inline-start:8px;vertical-align:middle;font-weight:700;}
+.mode-live{background:#dcf5e7;color:var(--ok);} .mode-dry{background:#fff4d6;color:var(--warn);}
+
+/* modal + toast */
+.modal{position:fixed;inset:0;background:rgba(13,27,61,.5);display:none;align-items:center;justify-content:center;z-index:50;padding:18px;backdrop-filter:blur(4px);}
+.modal.open{display:flex;}
+.sheet{background:#fff;border:1px solid var(--line);border-radius:22px;max-width:600px;width:100%;max-height:90vh;overflow:auto;padding:26px;box-shadow:0 30px 70px rgba(13,27,61,.3);}
+.sheet h3{font-size:1.2rem;margin-bottom:6px;color:var(--navy);} .sheet .sub{color:var(--muted);font-size:.86rem;margin-bottom:16px;}
+.field{margin-bottom:12px;}
+.camp{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--line);border-radius:14px;margin-bottom:10px;background:var(--soft);}
+.camp b{display:block;color:var(--navy);font-size:.95rem;} .camp small{color:var(--muted);font-size:.78rem;}
+.camp .nums{font-family:var(--font-mono);font-size:.8rem;white-space:nowrap;}
+#toasts{position:fixed;bottom:20px;left:20px;display:flex;flex-direction:column;gap:10px;z-index:60;}
+.toast{background:#fff;border:1px solid var(--blue);border-radius:14px;padding:11px 18px;font-size:.9rem;box-shadow:0 10px 30px rgba(13,27,61,.18);animation:tin .3s ease both;color:var(--navy);font-weight:600;}
+.toast.err{border-color:var(--bad);color:var(--bad);}
+@keyframes tin{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:70;}
+
+footer{text-align:center;margin-top:40px;font-size:.88rem;color:var(--muted);}
+footer b{color:var(--navy);}
+
+@media (max-width:1060px){.stats{grid-template-columns:repeat(3,1fr);}}
+@media (max-width:980px){
+  .grid{grid-template-columns:1fr;} .sticky{position:static;}
+  .hero{grid-template-columns:1fr;} .hero-3d{order:-1;height:230px;min-height:230px;} #stage{min-height:230px;}
+  .hero-text{padding:26px 24px;} .stats{grid-template-columns:repeat(2,1fr);}
+}
+@media (max-width:560px){.row,.row3{grid-template-columns:1fr;}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
+</style>
+</head>
+<body>
+
+<!-- ================= LOGIN ================= -->
+<div id="loginView">
+  <canvas id="bgstage" aria-hidden="true"></canvas>
+  <form class="login-card" id="loginForm" autocomplete="on">
+    <img class="seal" src="assets/nextstep-seal.png" alt="الختم الرسمي لـ NextStep AI">
+    <h1>مركز المراسلات</h1>
+    <p class="sub">دخول مخصص لمشرفي NextStep AI</p>
+    <div class="login-err hidden" id="loginErr"></div>
+    <div class="field"><label class="f" for="lgEmail">البريد الإلكتروني</label><input type="email" id="lgEmail" dir="ltr" autocomplete="username" required></div>
+    <div class="field"><label class="f" for="lgPass">كلمة المرور</label><input type="password" id="lgPass" dir="ltr" autocomplete="current-password" required></div>
+    <button class="btn primary" type="submit" id="lgBtn">تسجيل الدخول</button>
+    <div class="login-links"><a href="#" id="forgot">نسيت كلمة المرور؟</a></div>
+    <div class="login-sign">م. أحمد وسام الحايك — <b>مؤسس NextStep</b></div>
+  </form>
+</div>
+
+<!-- ================= APP ================= -->
+<div id="appView" class="hidden">
+<div class="wrap">
+
+  <div class="topbar">
+    <div class="brand">
+      <img src="assets/nextstep-seal.png" alt="الختم الرسمي لـ NextStep AI">
+      <div><b>NextStep AI</b><span>مركز المراسلات</span></div>
+    </div>
+    <div class="top-actions">
+      <span class="smtp-chip" id="smtpChip"><i></i><span id="smtpTxt">جارٍ فحص SMTP…</span></span>
+      <button class="chip-btn" id="openHistory">سجل الحملات</button>
+      <button class="chip-btn" id="openSettings">إعدادات</button>
+      <span class="who" id="who"></span>
+      <button class="chip-btn" id="logout">خروج</button>
+    </div>
+  </div>
+
+  <section class="hero">
+    <div class="hero-text">
+      <h1>راسل مستخدمي المنصة <em>برسالة تحمل هويتنا</em></h1>
+      <p>أرسل لشخص واحد، أو للجميع دفعة واحدة، أو ارفع ملف Excel، أو اسحب جهات الاتصال من قاعدة البيانات. تصل كل رسالة منسّقة بختم NextStep AI وتوقيعك.</p>
+      <div class="signature"><i></i> م. أحمد وسام الحايك — مؤسس NextStep</div>
+    </div>
+    <div class="hero-3d"><canvas id="stage" aria-hidden="true"></canvas></div>
+  </section>
+
+  <div class="boost" aria-live="polite"><span class="spark">✦</span><p id="boostMsg"></p><small id="boostCount"></small></div>
+
+  <div class="stats">
+    <div class="stat navy"><small>إجمالي المستلمين</small><b id="sTotal">0</b></div>
+    <div class="stat"><small>جاهزون للإرسال</small><b id="sReady">0</b></div>
+    <div class="stat ok"><small>تم الإرسال</small><b id="sSent">0</b></div>
+    <div class="stat bad"><small>فشل أو غير صالح</small><b id="sFail">0</b></div>
+    <div class="stat navy"><small>المتبقي من حصة اليوم</small><b id="sQuota">—</b></div>
+  </div>
+
+  <div class="grid">
+    <!-- LEFT -->
+    <div>
+      <section class="panel">
+        <h2><span class="n">1</span> المستلمون</h2>
+        <p class="sub">اختر طريقة الإضافة. يمكنك الجمع بينها، ويُحذف أي بريد مكرر تلقائياً.</p>
+
+        <div class="tabs" role="tablist">
+          <button class="tab" role="tab" aria-selected="true" data-tab="single">شخص واحد</button>
+          <button class="tab" role="tab" aria-selected="false" data-tab="bulk">قائمة جماعية</button>
+          <button class="tab" role="tab" aria-selected="false" data-tab="excel">ملف Excel</button>
+          <button class="tab" role="tab" aria-selected="false" data-tab="db">قاعدة البيانات</button>
+        </div>
+
+        <div class="tab-body active" id="tab-single">
+          <div class="row">
+            <div><label class="f" for="sName">الاسم</label><input type="text" id="sName" placeholder="مثال: سارة أحمد"></div>
+            <div><label class="f" for="sEmail">البريد الإلكتروني</label><input type="email" id="sEmail" dir="ltr" placeholder="name@example.com"></div>
+          </div>
+          <div class="btns">
+            <button class="btn primary" id="addOne">أضف للقائمة</button>
+            <button class="btn ghost" id="addOneOnly">أضفه وحده كمستلم</button>
+          </div>
+        </div>
+
+        <div class="tab-body" id="tab-bulk">
+          <label class="f" for="bulkText">ألصق القائمة: كل سطر «الاسم، البريد» أو البريد فقط</label>
+          <textarea id="bulkText" class="ltr" placeholder="سارة أحمد, sara@example.com&#10;omar@example.com&#10;ليلى خالد; layla@example.com"></textarea>
+          <div class="btns"><button class="btn primary" id="addBulk">أضف القائمة</button></div>
+        </div>
+
+        <div class="tab-body" id="tab-excel">
+          <div class="drop" id="drop" tabindex="0" role="button">
+            <b>اسحب ملف Excel هنا أو اضغط للاختيار</b>
+            يدعم xlsx و xls و csv — أول ورقة في الملف
+          </div>
+          <input type="file" id="file" accept=".xlsx,.xls,.csv" hidden>
+          <p class="hint">يتعرف الموقع تلقائياً على عمودَي الاسم والبريد (بالعربية أو الإنجليزية).
+            <a href="#" id="dlTemplate">حمّل ملفاً نموذجياً</a></p>
+        </div>
+
+        <div class="tab-body" id="tab-db">
+          <p class="hint" style="margin-top:0">جهات الاتصال المحفوظة في جدول <b>contacts</b> (المشتركون فقط).</p>
+          <div class="btns" style="margin-bottom:6px">
+            <button class="btn primary" id="dbLoad">تحميل جهات الاتصال المحفوظة</button>
+            <button class="btn ghost" id="dbSave">حفظ القائمة الحالية في القاعدة</button>
+          </div>
+          <div class="dbbox">
+            <h4>استيراد من جدول آخر في Supabase</h4>
+            <div class="row3">
+              <div><label class="f" for="impTable">اسم الجدول</label><input type="text" id="impTable" dir="ltr" placeholder="team_applications"></div>
+              <div><label class="f" for="impName">عمود الاسم</label><input type="text" id="impName" dir="ltr" placeholder="full_name"></div>
+              <div><label class="f" for="impEmail">عمود البريد</label><input type="text" id="impEmail" dir="ltr" placeholder="email"></div>
+            </div>
+            <button class="btn ghost" id="dbImport">استيراد</button>
+            <p class="hint">يلزم منح المشرف صلاحية قراءة ذلك الجدول (انظر README).</p>
+          </div>
+        </div>
+
+        <div class="tools">
+          <input type="text" id="search" placeholder="ابحث بالاسم أو البريد…" aria-label="بحث في المستلمين">
+          <button class="btn ghost" id="selAll">تحديد الكل</button>
+          <button class="btn ghost" id="selNone">إلغاء التحديد</button>
+          <button class="btn ghost" id="rmInvalid">حذف غير الصالح</button>
+          <button class="btn danger" id="clearAll">مسح القائمة</button>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th style="width:42px"></th><th>الاسم</th><th>البريد</th><th style="width:100px">الحالة</th><th style="width:84px"></th></tr></thead>
+            <tbody id="tbody"></tbody>
+          </table>
+          <div class="empty" id="empty">لا يوجد مستلمون بعد. أضف شخصاً، أو ألصق قائمة، أو ارفع ملف Excel.</div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2><span class="n">2</span> الرسالة</h2>
+        <p class="sub">اكتب الموضوع والنص. استخدم <b dir="ltr">{{name}}</b> ليُستبدل باسم كل مستلم.</p>
+
+        <div class="tpls" id="tpls"></div>
+
+        <div class="field"><label class="f" for="subject">موضوع الرسالة</label><input type="text" id="subject" placeholder="مثال: أهلاً بك في NextStep AI"></div>
+
+        <label class="f">نص الرسالة</label>
+        <div class="toolbar">
+          <button class="tb" data-cmd="bold"><b>B</b></button>
+          <button class="tb" data-cmd="italic"><i>I</i></button>
+          <button class="tb" data-cmd="underline"><u>U</u></button>
+          <button class="tb" data-cmd="insertUnorderedList">قائمة</button>
+          <button class="tb" id="tbLink">رابط</button>
+          <button class="tb" id="tbBtn">زر</button>
+          <button class="tb" id="tbName">اسم المستلم</button>
+          <button class="tb" data-cmd="removeFormat">مسح التنسيق</button>
+        </div>
+        <div id="editor" contenteditable="true" data-ph="اكتب رسالتك هنا…"></div>
+
+        <label class="toggle"><input type="checkbox" id="greet" checked> أضف تحية «مرحباً {الاسم}» في بداية الرسالة</label>
+        <div class="sigbox">يُضاف أسفل كل رسالة تلقائياً: <b>م. أحمد وسام الحايك</b> — مؤسس NextStep AI</div>
+      </section>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="sticky">
+      <section class="panel">
+        <h2>معاينة الرسالة</h2>
+        <p class="sub" id="pvFor">كما ستظهر عند المستلم</p>
+        <div class="device">
+          <div class="device-bar"><span id="pvSubject">—</span><span>من: <span id="pvFrom">NextStep AI</span></span></div>
+          <iframe id="preview" title="معاينة البريد"></iframe>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2><span class="n">3</span> الإرسال <span class="mode-tag mode-dry" id="modeTag">وضع تجريبي</span></h2>
+        <p class="sub" id="sendSub">سيُرسل إلى المستلمين المحدّدين فقط.</p>
+        <div class="btns">
+          <button class="btn primary" id="sendBtn">ابدأ الإرسال</button>
+          <button class="btn ghost" id="testBtn">أرسل نسخة تجريبية لي</button>
+          <button class="btn danger" id="stopBtn" disabled>إيقاف</button>
+        </div>
+        <div class="btns"><button class="btn ghost" id="retryBtn">أعد إرسال الفاشلة</button><button class="btn ghost" id="exportBtn">تصدير التقرير</button></div>
+        <div class="progress"><div id="bar"></div></div>
+        <div class="pinfo"><span id="pTxt">0 / 0</span><span id="pPct">0%</span></div>
+        <div class="log" id="log"><div class="inf">سجل الإرسال سيظهر هنا.</div></div>
+      </section>
+    </div>
+  </div>
+
+  <footer>صُمّم بإشراف <b>م. أحمد وسام الحايك</b> — مؤسس NextStep · NextStep AI</footer>
+</div>
+</div>
+
+<!-- settings modal -->
+<div class="modal" id="mSettings" role="dialog" aria-modal="true" aria-labelledby="stTitle">
+  <div class="sheet">
+    <h3 id="stTitle">الإعدادات</h3>
+    <p class="sub">بيانات خادم SMTP محفوظة بأمان في أسرار Supabase وليست في المتصفح. هنا إعدادات الواجهة فقط.</p>
+    <div class="row">
+      <div class="field"><label class="f">اسم المرسل (للمعاينة)</label><input type="text" id="cfgFrom" placeholder="NextStep AI"></div>
+      <div class="field"><label class="f">اسم دالة الإرسال</label><input type="text" id="cfgFn" dir="ltr" placeholder="send-mail"></div>
+    </div>
+    <div class="field"><label class="f">رابط الشعار الكامل داخل الرسالة</label><input type="text" id="cfgLogo" dir="ltr" placeholder="https://username.github.io/repo/assets/nextstep-seal.png"></div>
+    <div class="row">
+      <div class="field"><label class="f">الفاصل بين الدفعات (ملّي ثانية)</label><input type="number" id="cfgDelay" min="500" step="100"></div>
+      <div class="field"><label class="f">بريدك للنسخة التجريبية</label><input type="email" id="cfgTest" dir="ltr"></div>
+    </div>
+    <label class="toggle"><input type="checkbox" id="cfgDry"> الوضع التجريبي: محاكاة الإرسال دون إرسال فعلي</label>
+    <div class="btns"><button class="btn primary" id="saveCfg">حفظ الإعدادات</button><button class="btn ghost" id="pingBtn">فحص اتصال SMTP</button><button class="btn ghost" data-close>إغلاق</button></div>
+  </div>
+</div>
+
+<!-- history modal -->
+<div class="modal" id="mHistory" role="dialog" aria-modal="true" aria-labelledby="hsTitle">
+  <div class="sheet">
+    <h3 id="hsTitle">سجل الحملات</h3>
+    <p class="sub">آخر 30 حملة. اضغط «التفاصيل» لعرض الرسائل الفاشلة.</p>
+    <div id="hsList"></div>
+    <div class="btns"><button class="btn ghost" data-close>إغلاق</button></div>
+  </div>
+</div>
+
+<!-- confirm modal -->
+<div class="modal" id="mConfirm" role="dialog" aria-modal="true" aria-labelledby="cfTitle">
+  <div class="sheet">
+    <h3 id="cfTitle">تأكيد الإرسال</h3>
+    <p class="sub" id="cfText"></p>
+    <div class="btns"><button class="btn primary" id="cfGo">نعم، أرسل الآن</button><button class="btn ghost" data-close>رجوع</button></div>
+  </div>
+</div>
+
+<div id="toasts" aria-live="polite"></div>
+<canvas id="confetti" aria-hidden="true"></canvas>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+/* ============ config ============ */
+const SUPABASE_URL = "https://gtpdvlibwtgakjlkjfdx.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_p-ihLx5t2MUq__yjOB65CQ_oTiDTpbU";
+const sb = (window.supabase) ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+
+/* ============ helpers & state ============ */
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const SIGN_NAME = 'م. أحمد وسام الحايك';
+const SIGN_TITLE = 'مؤسس NextStep AI';
+const store = {
+  get(k, d){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+};
+const defaultLogo = (()=>{ try{ return new URL('assets/nextstep-seal.png', location.href).href; }catch(e){ return ''; } })();
+let cfg = Object.assign({from:'NextStep AI', logo:'', delay:2000, test:'', dry:true, fn:'send-mail'}, store.get('nsmail_cfg2', {}));
+let recipients = [];          // قائمة العمل (في الذاكرة فقط؛ القاعدة هي التخزين الدائم)
+let logLines = [];
+let running = false, stopFlag = false, uid = Date.now(), session = null, quota = null;
+const nid = () => ++uid;
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function toast(msg, err){
+  const t = document.createElement('div'); t.className = 'toast' + (err ? ' err' : ''); t.textContent = msg;
+  $('#toasts').appendChild(t); setTimeout(()=>t.remove(), 4200);
+}
+const ERR_AR = {
+  smtp_not_configured:'خادم SMTP غير مهيأ بعد. أضف أسراره في Supabase (راجع README).',
+  daily_limit_reached:'تم بلوغ الحد اليومي للإرسال.',
+  forbidden:'هذا الحساب ليس ضمن قائمة المشرفين.',
+  unauthorized:'انتهت الجلسة. سجّل الدخول من جديد.',
+  subject_required:'موضوع الرسالة مطلوب.',
+  invalid_email:'بريد غير صالح', invalid_html:'محتوى الرسالة غير صالح أو كبير جداً'
+};
+const errAr = m => ERR_AR[m] || m;
+
+/* ============ auth ============ */
+function showLoginErr(msg){ const e = $('#loginErr'); e.textContent = msg; e.classList.toggle('hidden', !msg); }
+$('#loginForm').addEventListener('submit', async e => {
+  e.preventDefault(); showLoginErr('');
+  if(!sb) return showLoginErr('تعذّر تحميل مكتبة Supabase. تحقّق من الاتصال بالإنترنت.');
+  $('#lgBtn').disabled = true; $('#lgBtn').textContent = 'جارٍ الدخول…';
+  const {data, error} = await sb.auth.signInWithPassword({email:$('#lgEmail').value.trim(), password:$('#lgPass').value});
+  $('#lgBtn').disabled = false; $('#lgBtn').textContent = 'تسجيل الدخول';
+  if(error) return showLoginErr('بيانات الدخول غير صحيحة.');
+  await enterApp(data.session);
+});
+$('#forgot').addEventListener('click', async e => {
+  e.preventDefault(); if(!sb) return;
+  const em = $('#lgEmail').value.trim();
+  if(!EMAIL_RE.test(em)) return showLoginErr('اكتب بريدك أولاً ثم اضغط «نسيت كلمة المرور؟»');
+  const {error} = await sb.auth.resetPasswordForEmail(em, {redirectTo: location.href.split('#')[0]});
+  showLoginErr(error ? 'تعذّر إرسال رابط الاستعادة.' : ''); if(!error) toast('أُرسل رابط استعادة كلمة المرور إلى بريدك');
+});
+async function enterApp(sess){
+  if(!sess) return;
+  const {data, error} = await sb.from('admins').select('email').limit(1);
+  if(error || !data || !data.length){
+    await sb.auth.signOut(); showLoginErr('هذا الحساب ليس ضمن قائمة المشرفين المصرّح لهم.'); return;
+  }
+  session = sess; $('#who').textContent = sess.user.email;
+  if(!cfg.test) cfg.test = sess.user.email;
+  $('#loginView').classList.add('hidden'); $('#appView').classList.remove('hidden');
+  initApp(); pingSmtp();
+}
+$('#logout').onclick = async () => { await sb.auth.signOut(); recipients = []; location.reload(); };
+(async function boot(){
+  if(!sb){ showLoginErr('تعذّر تحميل مكتبة Supabase. تحقّق من الاتصال بالإنترنت.'); return; }
+  const {data} = await sb.auth.getSession();
+  if(data && data.session) enterApp(data.session);
+})();
+
+/* ============ tabs ============ */
+$$('.tab').forEach(t => t.addEventListener('click', () => {
+  $$('.tab').forEach(x => x.setAttribute('aria-selected', x===t));
+  $$('.tab-body').forEach(b => b.classList.toggle('active', b.id === 'tab-' + t.dataset.tab));
+}));
+
+/* ============ recipients ============ */
+function addRecipients(list, only, quiet){
+  const have = new Set(recipients.map(r => r.email.toLowerCase()));
+  let added = 0, dup = 0, bad = 0;
+  if(only) recipients.forEach(r => r.checked = false);
+  list.forEach(x => {
+    const email = String(x.email || '').trim(), name = String(x.name || '').trim();
+    if(!email && !name) return;
+    const key = email.toLowerCase();
+    if(email && have.has(key)){ dup++; if(only){ const r = recipients.find(r => r.email.toLowerCase()===key); if(r) r.checked = true; } return; }
+    const valid = EMAIL_RE.test(email);
+    if(!valid) bad++;
+    if(email) have.add(key);
+    recipients.push({id:nid(), name, email, status: valid ? 'pending' : 'invalid', checked: valid, err:'', dbId:x.dbId||null});
+    added++;
+  });
+  renderTable();
+  if(!quiet) toast(`أُضيف ${added}` + (dup ? ` · مكرر ${dup}` : '') + (bad ? ` · غير صالح ${bad}` : ''), added===0 && (dup||bad));
+  return {added, dup, bad};
+}
+function statusText(s){ return {pending:'جاهز',sending:'جارٍ الإرسال',sent:'تم الإرسال',failed:'فشل',invalid:'بريد غير صالح'}[s]; }
+function renderTable(){
+  const q = $('#search').value.trim().toLowerCase();
+  const tb = $('#tbody'); tb.innerHTML = '';
+  const shown = recipients.filter(r => !q || r.name.toLowerCase().includes(q) || r.email.toLowerCase().includes(q));
+  shown.forEach(r => {
+    const tr = document.createElement('tr'); tr.dataset.id = r.id;
+    tr.innerHTML = `<td><input type="checkbox" class="ck" ${r.checked?'checked':''} aria-label="تحديد"></td>
+      <td><input type="text" class="nm" value="${esc(r.name)}" placeholder="بدون اسم"></td>
+      <td><input type="email" class="em" dir="ltr" value="${esc(r.email)}"></td>
+      <td><span class="badge b-${r.status}" title="${esc(r.err||'')}">${statusText(r.status)}</span></td>
+      <td>${r.dbId ? '<button class="x unsub" title="إيقاف المراسلة لهذا الشخص نهائياً" aria-label="إيقاف المراسلة">🚫</button>' : ''}<button class="x del" title="إزالة من القائمة" aria-label="إزالة">✕</button></td>`;
+    tb.appendChild(tr);
+  });
+  $('#empty').style.display = shown.length ? 'none' : 'block';
+  $('#empty').textContent = (recipients.length && !shown.length) ? 'لا نتائج مطابقة للبحث.' : 'لا يوجد مستلمون بعد. أضف شخصاً، أو ألصق قائمة، أو ارفع ملف Excel.';
+  updateStats(); renderPreview();
+}
+function refreshRow(r){
+  const tr = $(`tr[data-id="${r.id}"]`); if(!tr) return;
+  const b = tr.querySelector('.badge'); b.className = 'badge b-' + r.status; b.textContent = statusText(r.status); b.title = r.err || '';
+  tr.querySelector('.ck').checked = r.checked;
+}
+$('#tbody').addEventListener('change', e => {
+  const tr = e.target.closest('tr'); if(!tr) return;
+  const r = recipients.find(x => x.id == tr.dataset.id); if(!r) return;
+  if(e.target.classList.contains('ck')) r.checked = e.target.checked;
+  if(e.target.classList.contains('nm')) r.name = e.target.value.trim();
+  if(e.target.classList.contains('em')){
+    r.email = e.target.value.trim();
+    if(EMAIL_RE.test(r.email)){ if(r.status==='invalid'||r.status==='failed'){ r.status='pending'; r.err=''; } }
+    else { r.status = 'invalid'; r.checked = false; }
+  }
+  refreshRow(r); updateStats(); renderPreview();
+});
+$('#tbody').addEventListener('click', async e => {
+  const tr = e.target.closest('tr'); if(!tr) return;
+  const r = recipients.find(x => x.id == tr.dataset.id); if(!r) return;
+  if(e.target.classList.contains('del')){ recipients = recipients.filter(x => x !== r); renderTable(); }
+  if(e.target.classList.contains('unsub')){
+    if(!confirm(`إيقاف المراسلة نهائياً مع ${r.email}؟ لن يظهر في القوائم المحمّلة من القاعدة.`)) return;
+    const {error} = await sb.from('contacts').update({subscribed:false}).eq('id', r.dbId);
+    if(error) return toast('تعذّر التحديث: ' + error.message, true);
+    recipients = recipients.filter(x => x !== r); renderTable(); toast('تم إيقاف المراسلة لهذا الشخص');
+  }
+});
+$('#search').addEventListener('input', renderTable);
+$('#selAll').onclick = () => { recipients.forEach(r => r.checked = r.status!=='invalid'); renderTable(); };
+$('#selNone').onclick = () => { recipients.forEach(r => r.checked = false); renderTable(); };
+$('#rmInvalid').onclick = () => { const n = recipients.filter(r=>r.status==='invalid').length; recipients = recipients.filter(r=>r.status!=='invalid'); renderTable(); toast(`حُذف ${n} بريد غير صالح`); };
+$('#clearAll').onclick = () => { if(!recipients.length) return; if(confirm('سيتم مسح كل المستلمين من القائمة الحالية (لا يؤثر على القاعدة). متأكد؟')){ recipients = []; renderTable(); } };
+
+function targets(){ return recipients.filter(r => r.checked && r.status !== 'invalid' && r.status !== 'sent'); }
+function updateStats(){
+  $('#sTotal').textContent = recipients.length;
+  $('#sReady').textContent = targets().length;
+  $('#sSent').textContent = recipients.filter(r => r.status==='sent').length;
+  $('#sFail').textContent = recipients.filter(r => r.status==='failed' || r.status==='invalid').length;
+  $('#sQuota').textContent = quota === null ? '—' : quota;
+  $('#sendSub').textContent = `سيُرسل إلى ${targets().length} مستلم محدّد (الذين لم يُرسل لهم بعد).`;
+}
+
+/* single / bulk */
+$('#addOne').onclick = () => { addRecipients([{name:$('#sName').value, email:$('#sEmail').value}]); $('#sName').value = $('#sEmail').value = ''; };
+$('#addOneOnly').onclick = () => { addRecipients([{name:$('#sName').value, email:$('#sEmail').value}], true); $('#sName').value = $('#sEmail').value = ''; };
+$('#addBulk').onclick = () => {
+  const out = [];
+  $('#bulkText').value.split(/\r?\n/).forEach(line => {
+    line = line.trim(); if(!line) return;
+    const m = line.match(/[^\s,;\t<>()]+@[^\s,;\t<>()]+/);
+    if(m){ out.push({email:m[0], name: line.replace(m[0],'').replace(/[,;\t<>()"]+/g,' ').trim()}); }
+    else out.push({email:line, name:''});
+  });
+  if(!out.length) return toast('الصق قائمة أولاً', true);
+  addRecipients(out); $('#bulkText').value = '';
+};
+
+/* excel */
+const drop = $('#drop'), fileIn = $('#file');
+drop.onclick = () => fileIn.click();
+drop.onkeydown = e => { if(e.key==='Enter'||e.key===' '){ e.preventDefault(); fileIn.click(); } };
+['dragenter','dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('over'); }));
+['dragleave','drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('over'); }));
+drop.addEventListener('drop', e => { if(e.dataTransfer.files[0]) readFile(e.dataTransfer.files[0]); });
+fileIn.onchange = () => { if(fileIn.files[0]) readFile(fileIn.files[0]); fileIn.value=''; };
+function readFile(f){
+  if(typeof XLSX === 'undefined') return toast('تعذّر تحميل مكتبة Excel. تحقّق من الاتصال بالإنترنت.', true);
+  const rd = new FileReader();
+  rd.onload = e => {
+    try{
+      const wb = XLSX.read(e.target.result, {type:'array'});
+      const rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], {header:1, defval:''});
+      if(!rows.length) return toast('الملف فارغ', true);
+      const head = rows[0].map(h => String(h).trim().toLowerCase());
+      let ei = head.findIndex(h => /mail|بريد|ايميل|إيميل/.test(h));
+      let ni = head.findIndex(h => /name|اسم|الاسم/.test(h));
+      let start = 1;
+      if(ei < 0){
+        const r0 = rows.find(r => r.some(c => String(c).includes('@'))) || [];
+        ei = r0.findIndex(c => String(c).includes('@')); start = 0;
+        if(ei < 0) return toast('لم أجد عمود البريد الإلكتروني في الملف', true);
+      }
+      if(ni < 0) ni = rows[0].findIndex((_,i) => i !== ei);
+      addRecipients(rows.slice(start).map(r => ({name: ni>=0 && ni!==ei ? r[ni] : '', email: r[ei]})));
+    }catch(err){ toast('تعذّرت قراءة الملف', true); }
+  };
+  rd.readAsArrayBuffer(f);
+}
+$('#dlTemplate').onclick = e => {
+  e.preventDefault();
+  if(typeof XLSX === 'undefined') return toast('مكتبة Excel غير متاحة', true);
+  const ws = XLSX.utils.aoa_to_sheet([['الاسم','البريد الإلكتروني'],['سارة أحمد','sara@example.com'],['عمر خالد','omar@example.com']]);
+  const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, 'المستلمون');
+  XLSX.writeFile(wb, 'NextStep_recipients_template.xlsx');
+};
+
+/* database */
+$('#dbLoad').onclick = async () => {
+  $('#dbLoad').disabled = true;
+  const {data, error} = await sb.from('contacts').select('id,name,email').eq('subscribed', true).order('created_at', {ascending:false}).limit(5000);
+  $('#dbLoad').disabled = false;
+  if(error) return toast('تعذّر التحميل: ' + error.message, true);
+  if(!data.length) return toast('لا توجد جهات اتصال محفوظة بعد');
+  addRecipients(data.map(c => ({name:c.name, email:c.email, dbId:c.id})));
+  // اربط dbId للمكرر أيضاً
+  data.forEach(c => { const r = recipients.find(x => x.email.toLowerCase()===c.email.toLowerCase()); if(r && !r.dbId) r.dbId = c.id; });
+  renderTable();
+};
+$('#dbSave').onclick = async () => {
+  const rows = recipients.filter(r => r.status !== 'invalid' && EMAIL_RE.test(r.email))
+    .map(r => ({name:r.name || '', email:r.email.toLowerCase(), source:'mailer'}));
+  if(!rows.length) return toast('لا توجد بيانات صالحة للحفظ', true);
+  $('#dbSave').disabled = true;
+  const {error} = await sb.from('contacts').upsert(rows, {onConflict:'email', ignoreDuplicates:false});
+  $('#dbSave').disabled = false;
+  if(error) return toast('تعذّر الحفظ: ' + error.message, true);
+  toast(`تم حفظ ${rows.length} جهة اتصال في القاعدة`);
+};
+$('#dbImport').onclick = async () => {
+  const t = $('#impTable').value.trim(), n = $('#impName').value.trim(), m = $('#impEmail').value.trim();
+  const ident = /^[A-Za-z_][A-Za-z0-9_]*$/;
+  if(!ident.test(t) || !ident.test(m) || (n && !ident.test(n))) return toast('أدخل أسماء جدول وأعمدة صحيحة (أحرف إنجليزية وأرقام و _ فقط)', true);
+  const cols = n ? `${n},${m}` : m;
+  const {data, error} = await sb.from(t).select(cols).limit(5000);
+  if(error) return toast('تعذّر الاستيراد: ' + error.message, true);
+  addRecipients((data || []).map(r => ({name: n ? r[n] : '', email: r[m]})));
+};
+
+/* ============ composer ============ */
+const TPL = {
+  'ترحيب بمستخدم جديد': ['أهلاً بك في NextStep AI', `<p>يسعدنا انضمامك إلى <b>NextStep AI</b>، المنصة التي تساعدك على اختيار التخصص والجامعة المناسبين بثقة وبيانات حقيقية.</p><p>ابدأ الآن باختبار الميول، وستحصل على توصيات مبنية على قدراتك واهتماماتك.</p>`],
+  'دعوة لتجربة المنصة': ['جرّب NextStep AI واكتشف تخصصك', `<p>قرار التخصص من أهم قراراتك، ولا يجب أن تتخذه وحدك.</p><ul><li>اختبار ذكي لميولك ومهاراتك</li><li>توصيات بنسبة توافق واضحة</li><li>مساعد أكاديمي يجيب عن أسئلتك</li></ul><p>الاستخدام الأساسي مجاني بالكامل.</p>`],
+  'إعلان أو تحديث': ['جديد في NextStep AI', `<p>يسعدنا إخبارك بتحديث جديد على المنصة:</p><p>اكتب هنا تفاصيل الإعلان.</p><p>نرحب بملاحظاتك دائماً، فهي تساعدنا على التحسين.</p>`],
+  'شكر وتقدير': ['شكراً لدعمك NextStep AI', `<p>نشكرك على ثقتك ودعمك. وجودك معنا يمنحنا دافعاً لنبني منصة أفضل للطلاب في فلسطين.</p><p>سنواصل العمل ونوافيك بكل جديد.</p>`]
+};
+const tplBox = $('#tpls');
+Object.keys(TPL).forEach(k => { const b = document.createElement('button'); b.className='tpl'; b.textContent=k; b.onclick = () => {
+  if(($('#editor').innerText.trim() || $('#subject').value.trim()) && !confirm('سيُستبدل النص الحالي بالقالب. متابعة؟')) return;
+  $('#subject').value = TPL[k][0]; $('#editor').innerHTML = TPL[k][1]; saveDraft(); renderPreview();
+}; tplBox.appendChild(b); });
+
+$$('.tb[data-cmd]').forEach(b => b.addEventListener('mousedown', e => { e.preventDefault(); document.execCommand(b.dataset.cmd, false, null); saveDraft(); renderPreview(); }));
+$('#tbName').addEventListener('mousedown', e => { e.preventDefault(); $('#editor').focus(); document.execCommand('insertText', false, '{{name}}'); saveDraft(); renderPreview(); });
+let savedRange = null;
+function keepRange(){ const s = getSelection(); if(s.rangeCount && $('#editor').contains(s.anchorNode)) savedRange = s.getRangeAt(0).cloneRange(); }
+$('#editor').addEventListener('keyup', keepRange); $('#editor').addEventListener('mouseup', keepRange);
+function restoreRange(){ $('#editor').focus(); if(savedRange){ const s = getSelection(); s.removeAllRanges(); s.addRange(savedRange); } }
+$('#tbLink').addEventListener('mousedown', e => { e.preventDefault(); keepRange(); });
+$('#tbLink').onclick = () => { const u = prompt('الصق الرابط (يبدأ بـ https://)'); if(!u) return; restoreRange(); document.execCommand('createLink', false, u); saveDraft(); renderPreview(); };
+$('#tbBtn').addEventListener('mousedown', e => { e.preventDefault(); keepRange(); });
+$('#tbBtn').onclick = () => {
+  const t = prompt('نص الزر', 'ابدأ الآن'); if(!t) return; const u = prompt('رابط الزر (https://…)'); if(!u) return;
+  restoreRange();
+  document.execCommand('insertHTML', false, `<p style="text-align:center;margin:22px 0"><a href="${esc(u)}" style="background:#146EF5;color:#ffffff;padding:12px 30px;border-radius:10px;text-decoration:none;font-weight:700;display:inline-block">${esc(t)}</a></p>`);
+  saveDraft(); renderPreview();
+};
+$('#editor').addEventListener('paste', e => { e.preventDefault(); const t = (e.clipboardData||window.clipboardData).getData('text/plain'); document.execCommand('insertText', false, t); });
+function saveDraft(){ store.set('nsmail_draft', {s:$('#subject').value, b:$('#editor').innerHTML, g:$('#greet').checked}); }
+['#subject','#editor'].forEach(s => $(s).addEventListener('input', () => { saveDraft(); renderPreview(); }));
+$('#greet').addEventListener('change', () => { saveDraft(); renderPreview(); });
+
+/* ============ email html (white identity) ============ */
+function buildEmail(name, bodyHtml){
+  const logo = cfg.logo || defaultLogo;
+  const nm = (name || '').trim();
+  const body = bodyHtml.replace(/\{\{\s*name\s*\}\}/g, esc(nm || 'عزيزي المستخدم'));
+  const greet = $('#greet').checked ? `<p style="margin:0 0 14px;font-size:17px;font-weight:700;color:#0D1B3D">مرحباً ${esc(nm || 'عزيزي المستخدم')}،</p>` : '';
+  return `<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#f4f8fd;font-family:Tahoma,'Segoe UI',Arial,sans-serif;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4f8fd;padding:24px 10px;"><tr><td align="center">
+<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#ffffff;border-radius:18px;overflow:hidden;border:1px solid #dbe6f3;">
+<tr><td style="background:#ffffff;padding:26px 30px 14px;text-align:center;">
+  ${logo ? `<img src="${esc(logo)}" alt="NextStep AI" width="110" height="110" style="display:inline-block;border:0;margin-bottom:6px;">` : ''}
+  <div style="color:#0D1B3D;font-size:22px;font-weight:700;">NextStep AI</div>
+  <div style="color:#5d6f8c;font-size:13px;margin-top:4px;">وجهتك الذكية لاختيار التخصص والمستقبل</div>
+</td></tr>
+<tr><td style="height:4px;background:#146EF5;font-size:0;line-height:0;">&nbsp;</td></tr>
+<tr><td style="padding:30px;color:#26324d;font-size:15px;line-height:1.95;direction:rtl;text-align:right;">
+  ${greet}${body}
+</td></tr>
+<tr><td style="padding:0 30px 28px;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #dfe8f1;"><tr><td style="padding-top:18px;text-align:right;direction:rtl;">
+    <div style="font-size:13px;color:#6b7a93;margin-bottom:4px;">مع خالص التقدير،</div>
+    <div style="font-size:16px;font-weight:700;color:#0D1B3D;">${SIGN_NAME}</div>
+    <div style="font-size:13px;color:#146EF5;font-weight:600;">${SIGN_TITLE}</div>
+  </td></tr></table>
+</td></tr>
+<tr><td style="background:#0D1B3D;padding:16px 30px;text-align:center;color:#a9b8d0;font-size:12px;">NextStep AI — منصة الإرشاد الأكاديمي والمهني بالذكاء الاصطناعي</td></tr>
+</table></td></tr></table></body></html>`;
+}
+function renderPreview(){
+  const first = targets()[0] || recipients[0];
+  const nm = first ? first.name : 'سارة';
+  $('#pvFor').textContent = first ? `معاينة لـ: ${first.name || first.email}` : 'كما ستظهر عند المستلم';
+  $('#pvSubject').textContent = $('#subject').value.trim() || 'بدون موضوع';
+  $('#pvFrom').textContent = cfg.from || 'NextStep AI';
+  const body = $('#editor').innerHTML.trim() || '<p style="color:#8a97ad">ابدأ بكتابة رسالتك وستظهر هنا بتنسيق المنصة…</p>';
+  $('#preview').srcdoc = buildEmail(nm, body);
+}
+
+/* ============ settings & SMTP status ============ */
+function loadCfgUI(){
+  $('#cfgFrom').value = cfg.from; $('#cfgFn').value = cfg.fn; $('#cfgLogo').value = cfg.logo;
+  $('#cfgDelay').value = cfg.delay; $('#cfgTest').value = cfg.test; $('#cfgDry').checked = cfg.dry;
+}
+function updateMode(){
+  const t = $('#modeTag'); t.className = 'mode-tag ' + (cfg.dry ? 'mode-dry' : 'mode-live'); t.textContent = cfg.dry ? 'وضع تجريبي' : 'إرسال فعلي';
+}
+$('#openSettings').onclick = () => { loadCfgUI(); $('#mSettings').classList.add('open'); };
+$('#saveCfg').onclick = () => {
+  cfg = {from:$('#cfgFrom').value.trim() || 'NextStep AI', fn:$('#cfgFn').value.trim() || 'send-mail', logo:$('#cfgLogo').value.trim(),
+    delay:Math.max(500, +$('#cfgDelay').value || 2000), test:$('#cfgTest').value.trim(), dry:$('#cfgDry').checked};
+  store.set('nsmail_cfg2', cfg); updateMode(); renderPreview(); $('#mSettings').classList.remove('open'); toast('تم حفظ الإعدادات');
+};
+$('#pingBtn').onclick = () => pingSmtp(true);
+$$('[data-close]').forEach(b => b.onclick = () => b.closest('.modal').classList.remove('open'));
+$$('.modal').forEach(m => m.addEventListener('click', e => { if(e.target === m) m.classList.remove('open'); }));
+document.addEventListener('keydown', e => { if(e.key === 'Escape') $$('.modal.open').forEach(m => m.classList.remove('open')); });
+
+async function callFn(body){
+  const {data, error} = await sb.functions.invoke(cfg.fn || 'send-mail', {body});
+  if(error){
+    let msg = error.message || 'خطأ';
+    try{ const j = await error.context.json(); if(j && j.error) msg = j.error; }catch(e){}
+    const err = new Error(errAr(msg)); err.code = msg; throw err;
+  }
+  if(data && data.error) throw new Error(errAr(data.error));
+  return data;
+}
+async function pingSmtp(verbose){
+  const chip = $('#smtpChip'), txt = $('#smtpTxt');
+  try{
+    const d = await callFn({action:'ping'});
+    quota = d.remaining;
+    if(d.configured){ chip.className = 'smtp-chip ok'; txt.textContent = `SMTP جاهز · المتبقي اليوم ${d.remaining}`; if(verbose) toast('الاتصال سليم وSMTP مهيأ'); }
+    else { chip.className = 'smtp-chip bad'; txt.textContent = 'SMTP غير مهيأ'; if(verbose) toast(ERR_AR.smtp_not_configured, true); }
+  }catch(e){
+    quota = null; chip.className = 'smtp-chip bad'; txt.textContent = 'تعذّر الاتصال بالدالة';
+    if(verbose) toast('تعذّر الاتصال بدالة الإرسال: ' + e.message, true);
+  }
+  updateStats();
+}
+
+/* ============ sending (Supabase Edge Function → SMTP) ============ */
+function log(msg, cls){
+  const t = new Date().toLocaleTimeString('en-GB');
+  logLines.push({t, msg, cls});
+  const box = $('#log'); if(logLines.length === 1) box.innerHTML = '';
+  const d = document.createElement('div'); d.className = cls || ''; d.textContent = `[${t}] ${msg}`; box.appendChild(d); box.scrollTop = box.scrollHeight;
+}
+function checkReady(){
+  if(!$('#subject').value.trim()){ toast('اكتب موضوع الرسالة أولاً', true); $('#subject').focus(); return false; }
+  if(!$('#editor').innerText.trim()){ toast('اكتب نص الرسالة أولاً', true); $('#editor').focus(); return false; }
+  return true;
+}
+function setProgress(done, total){
+  const p = total ? Math.round(done/total*100) : 0;
+  $('#bar').style.width = p + '%'; $('#pPct').textContent = p + '%'; $('#pTxt').textContent = `${done} / ${total}`;
+}
+function lock(on){ running = on; $('#sendBtn').disabled = on; $('#testBtn').disabled = on; $('#retryBtn').disabled = on; $('#stopBtn').disabled = !on; }
+const CHUNK = 5;
+async function runBatch(list){
+  const subject = $('#subject').value.trim(), bodyHtml = $('#editor').innerHTML;
+  lock(true); stopFlag = false; setProgress(0, list.length);
+  log(`بدء الإرسال إلى ${list.length} مستلم (${cfg.dry ? 'تجريبي' : 'فعلي'})`, 'inf');
+  let campaignId = null;
+  if(!cfg.dry){
+    const {data, error} = await sb.from('mail_campaigns').insert({subject, body_html:bodyHtml, total:list.length, created_by:session.user.email}).select('id').single();
+    if(error){ log('✗ تعذّر إنشاء الحملة: ' + error.message, 'bad'); toast('تعذّر إنشاء الحملة', true); lock(false); return; }
+    campaignId = data.id;
+  }
+  let done = 0, ok = 0, fail = 0;
+  for(let i = 0; i < list.length; i += CHUNK){
+    if(stopFlag){ log('تم إيقاف الإرسال يدوياً', 'inf'); break; }
+    const chunk = list.slice(i, i + CHUNK);
+    chunk.forEach(r => { r.status = 'sending'; refreshRow(r); });
+    let results = [];
+    if(cfg.dry){
+      await new Promise(r => setTimeout(r, 500));
+      results = chunk.map(r => ({email:r.email, ok:true}));
+    } else {
+      try{
+        const d = await callFn({campaign_id:campaignId, subject, items: chunk.map(r => ({name:r.name, email:r.email, html:buildEmail(r.name, bodyHtml)}))});
+        results = d.results || [];
+        if(typeof d.remaining === 'number'){ quota = d.remaining; }
+      }catch(err){
+        results = chunk.map(r => ({email:r.email, ok:false, error:err.message}));
+        if(err.code === 'daily_limit_reached' || err.code === 'smtp_not_configured' || err.code === 'forbidden' || err.code === 'unauthorized') stopFlag = true;
+      }
+    }
+    chunk.forEach(r => {
+      const res = results.find(x => x.email && x.email.toLowerCase() === r.email.toLowerCase());
+      if(res && res.ok){ r.status = 'sent'; r.err = ''; ok++; log(`✓ ${r.email}`, 'ok'); }
+      else { r.status = 'failed'; r.err = errAr((res && res.error) || 'لم يصل رد من الخادم'); r.checked = true; fail++; log(`✗ ${r.email} — ${r.err}`, 'bad'); }
+      refreshRow(r); done++;
+    });
+    updateStats(); setProgress(done, list.length);
+    if(i + CHUNK < list.length && !stopFlag && !cfg.dry) await new Promise(res => setTimeout(res, cfg.delay));
+  }
+  list.forEach(r => { if(r.status === 'sending') r.status = 'pending'; });
+  if(campaignId) await sb.from('mail_campaigns').update({sent:ok, failed:fail}).eq('id', campaignId);
+  lock(false); renderTable(); if(!cfg.dry) pingSmtp();
+  log(`انتهى: نجح ${ok} · فشل ${fail}`, fail ? 'bad' : 'ok');
+  toast(`انتهى الإرسال: نجح ${ok}` + (fail ? ` · فشل ${fail}` : ''), fail > 0 && ok === 0);
+  if(ok > 0) burst();
+  boostRefresh();
+}
+$('#sendBtn').onclick = () => {
+  const list = targets();
+  if(!list.length) return toast('لا يوجد مستلمون محدّدون جاهزون للإرسال', true);
+  if(!checkReady()) return;
+  $('#cfText').innerHTML = `سيتم ${cfg.dry ? '<b>محاكاة</b> إرسال' : 'إرسال'} الرسالة «<b>${esc($('#subject').value.trim())}</b>» إلى <b>${list.length}</b> مستلم.` + (cfg.dry ? '' : '<br>لا يمكن التراجع بعد الإرسال.');
+  $('#mConfirm').classList.add('open');
+};
+$('#cfGo').onclick = () => { $('#mConfirm').classList.remove('open'); runBatch(targets()); };
+$('#stopBtn').onclick = () => { stopFlag = true; };
+$('#retryBtn').onclick = () => {
+  const f = recipients.filter(r => r.status === 'failed');
+  if(!f.length) return toast('لا توجد رسائل فاشلة');
+  if(!checkReady()) return;
+  runBatch(f);
+};
+$('#testBtn').onclick = async () => {
+  if(!checkReady()) return;
+  if(!cfg.test || !EMAIL_RE.test(cfg.test)){ toast('أدخل بريدك للنسخة التجريبية في الإعدادات', true); return $('#openSettings').click(); }
+  lock(true);
+  try{
+    if(cfg.dry){ await new Promise(r => setTimeout(r, 400)); log(`✓ (محاكاة) نسخة تجريبية إلى ${cfg.test}`, 'ok'); toast('محاكاة: لم يُرسل شيء فعلياً'); }
+    else {
+      await callFn({subject:'[تجربة] ' + $('#subject').value.trim(), items:[{name:'م. أحمد', email:cfg.test, html:buildEmail('م. أحمد', $('#editor').innerHTML)}]})
+        .then(d => { const r = d.results && d.results[0]; if(!r || !r.ok) throw new Error(errAr((r && r.error) || 'فشل')); });
+      log(`✓ نسخة تجريبية إلى ${cfg.test}`, 'ok'); toast('أُرسلت النسخة التجريبية'); pingSmtp();
+    }
+  }catch(err){ log(`✗ فشلت النسخة التجريبية — ${err.message}`, 'bad'); toast('فشلت النسخة التجريبية: ' + err.message, true); }
+  lock(false);
+};
+$('#exportBtn').onclick = () => {
+  if(!recipients.length) return toast('لا توجد بيانات للتصدير', true);
+  const rows = [['name','email','status','error'], ...recipients.map(r => [r.name, r.email, r.status, r.err || ''])];
+  const csv = '\ufeff' + rows.map(r => r.map(c => '"' + String(c).replace(/"/g,'""') + '"').join(',')).join('\n');
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv;charset=utf-8'}));
+  a.download = 'nextstep_send_report.csv'; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+};
+
+/* ============ history ============ */
+$('#openHistory').onclick = async () => {
+  $('#mHistory').classList.add('open');
+  const box = $('#hsList'); box.innerHTML = '<p class="hint">جارٍ التحميل…</p>';
+  const {data, error} = await sb.from('mail_campaigns').select('id,subject,total,sent,failed,created_at').order('created_at', {ascending:false}).limit(30);
+  if(error) { box.innerHTML = `<p class="hint">تعذّر التحميل: ${esc(error.message)}</p>`; return; }
+  if(!data.length){ box.innerHTML = '<p class="hint">لا توجد حملات بعد. أول حملة فعلية ستظهر هنا.</p>'; return; }
+  box.innerHTML = data.map(c => `<div class="camp"><div><b>${esc(c.subject)}</b><small>${new Date(c.created_at).toLocaleString('ar-EG')}</small></div>
+    <div class="nums">✓ ${c.sent} · ✗ ${c.failed} / ${c.total}</div>
+    ${c.failed ? `<button class="btn ghost" data-cid="${c.id}" style="padding:6px 12px;font-size:.78rem">التفاصيل</button>` : ''}</div>`).join('');
+};
+$('#hsList').addEventListener('click', async e => {
+  const id = e.target.dataset && e.target.dataset.cid; if(!id) return;
+  const {data, error} = await sb.from('mail_log').select('email,error').eq('campaign_id', id).eq('status','failed').limit(200);
+  if(error) return toast('تعذّر التحميل', true);
+  alert(data.map(r => `${r.email} — ${errAr(r.error || '')}`).join('\n') || 'لا توجد تفاصيل');
+});
+
+/* ============ motivation ============ */
+const BOOST = [
+  'كل رسالة تصل في وقتها قد تغيّر قرار طالب في اختيار تخصصه.',
+  'رسالة واضحة وقصيرة تُقرأ أكثر من رسالة طويلة. ابدأ بالفائدة.',
+  'خاطب كل شخص باسمه، فالرسالة الشخصية تُفتح أكثر.',
+  'أرسل نسخة تجريبية لنفسك قبل أي حملة. دقيقة واحدة توفر لك الأخطاء.',
+  'ما نبنيه اليوم يرافق الطالب من لحظة القرار حتى بناء مستقبله.',
+  'راسل من وافقوا على التواصل فقط، فثقتهم هي رأس مال المنصة.'
+];
+let bi = 0;
+function boostRefresh(){
+  const sent = recipients.filter(r => r.status==='sent').length;
+  $('#boostCount').textContent = sent ? `أُرسل في هذه الجلسة: ${sent}` : 'جاهز للانطلاق';
+}
+function boostTick(){
+  const p = $('#boostMsg'); p.style.opacity = 0;
+  setTimeout(() => { p.textContent = BOOST[bi++ % BOOST.length]; p.style.opacity = 1; }, 350);
+}
+function burst(){
+  if(reduceMotion) return;
+  const c = $('#confetti'), x = c.getContext('2d'); c.width = innerWidth; c.height = innerHeight;
+  const cols = ['#146EF5','#35D6F5','#8FD3F4','#0D1B3D','#ffffff'];
+  const ps = Array.from({length:110}, () => ({x:innerWidth/2, y:innerHeight*.6, vx:(Math.random()-.5)*16, vy:-Math.random()*15-4, s:Math.random()*7+4, c:cols[Math.random()*cols.length|0], r:Math.random()*6, vr:(Math.random()-.5)*.4}));
+  let f = 0;
+  (function step(){
+    x.clearRect(0,0,c.width,c.height);
+    ps.forEach(p => { p.vy += .45; p.x += p.vx; p.y += p.vy; p.r += p.vr; x.save(); x.translate(p.x,p.y); x.rotate(p.r); x.fillStyle = p.c; x.strokeStyle='rgba(13,27,61,.15)'; x.fillRect(-p.s/2,-p.s/2,p.s,p.s*.6); x.restore(); });
+    if(++f < 110) requestAnimationFrame(step); else x.clearRect(0,0,c.width,c.height);
+  })();
+}
+
+/* ============ 3D tilt on stats ============ */
+$$('.stat').forEach(c => {
+  c.addEventListener('mousemove', e => {
+    const b = c.getBoundingClientRect(), x = (e.clientX - b.left)/b.width - .5, y = (e.clientY - b.top)/b.height - .5;
+    c.style.transform = `rotateY(${x*14}deg) rotateX(${-y*14}deg)`;
+  });
+  c.addEventListener('mouseleave', () => c.style.transform = '');
+});
+
+/* ============ 3D scenes (white identity) ============ */
+function makeScene(canvas, host, opts){
+  if(typeof THREE === 'undefined' || !canvas) return;
+  const renderer = new THREE.WebGLRenderer({canvas, alpha:true, antialias:true});
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, 1, .1, 100); camera.position.set(0, 0, opts.z || 7.2);
+  const group = new THREE.Group(); scene.add(group);
+  const BLUE = 0x146EF5, CYAN = 0x35D6F5, NAVY = 0x0D1B3D;
+
+  const core = new THREE.Mesh(new THREE.IcosahedronGeometry(1.15, 1), new THREE.MeshBasicMaterial({color:BLUE, wireframe:true, transparent:true, opacity:.28}));
+  group.add(core);
+  const inner = new THREE.Mesh(new THREE.OctahedronGeometry(.42, 0), new THREE.MeshBasicMaterial({color:CYAN}));
+  group.add(inner);
+  const ringA = new THREE.Mesh(new THREE.TorusGeometry(2.1, .02, 8, 120), new THREE.MeshBasicMaterial({color:BLUE, transparent:true, opacity:.85}));
+  const ringB = new THREE.Mesh(new THREE.TorusGeometry(2.6, .014, 8, 120), new THREE.MeshBasicMaterial({color:NAVY, transparent:true, opacity:.4}));
+  ringA.rotation.x = Math.PI/2.6; ringB.rotation.x = Math.PI/2.6; ringB.rotation.y = .6;
+  group.add(ringA, ringB);
+
+  // الختم الرسمي في قلب المشهد (إن توفّر تحميل الصورة)
+  let seal = null;
+  if(opts.seal){
+    new THREE.TextureLoader().load('assets/nextstep-seal.png', tex => {
+      seal = new THREE.Mesh(new THREE.PlaneGeometry(2.3, 2.3), new THREE.MeshBasicMaterial({map:tex, transparent:true, side:THREE.DoubleSide}));
+      group.add(seal); inner.visible = false; core.material.opacity = .15;
+    }, undefined, () => {});
+  }
+
+  function envelope(){
+    const g = new THREE.Group(), w = .62, h = .4;
+    const body = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({color:0xffffff, side:THREE.DoubleSide}));
+    const edge = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.PlaneGeometry(w, h)), new THREE.LineBasicMaterial({color:BLUE}));
+    const flap = new THREE.Line(new THREE.BufferGeometry().setFromPoints([[-w/2,h/2,0],[0,-.02,0],[w/2,h/2,0]].map(p => new THREE.Vector3(...p))), new THREE.LineBasicMaterial({color:NAVY}));
+    g.add(body, edge, flap); return g;
+  }
+  const mails = [];
+  for(let i = 0; i < 6; i++){ const m = envelope(); m.userData = {a:i/6*Math.PI*2, r: i%2 ? 2.6 : 2.1, s: .35 + (i%3)*.08}; mails.push(m); group.add(m); }
+
+  const N = 130, pos = new Float32Array(N*3);
+  for(let i = 0; i < N; i++){ const r = 3 + Math.random()*3, t = Math.random()*Math.PI*2, p = Math.acos(2*Math.random()-1);
+    pos[i*3] = r*Math.sin(p)*Math.cos(t); pos[i*3+1] = r*Math.sin(p)*Math.sin(t); pos[i*3+2] = r*Math.cos(p); }
+  const pg = new THREE.BufferGeometry(); pg.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  const pts = new THREE.Points(pg, new THREE.PointsMaterial({color:BLUE, size:.04, transparent:true, opacity:.45}));
+  scene.add(pts);
+
+  let mx = 0, my = 0, visible = true;
+  host.addEventListener('mousemove', e => { const b = host.getBoundingClientRect(); mx = (e.clientX-b.left)/b.width - .5; my = (e.clientY-b.top)/b.height - .5; });
+  host.addEventListener('mouseleave', () => { mx = my = 0; });
+  document.addEventListener('visibilitychange', () => { visible = !document.hidden; });
+  function resize(){ const w = host.clientWidth, h = host.clientHeight; if(!w || !h) return; renderer.setSize(w, h, false); camera.aspect = w/h; camera.updateProjectionMatrix(); }
+  new ResizeObserver(resize).observe(host); resize();
+
+  function frame(t){
+    requestAnimationFrame(frame);
+    if(!visible || !host.offsetParent) return;
+    const s = t/1000;
+    if(!reduceMotion){
+      core.rotation.y = s*.35; core.rotation.x = s*.15;
+      inner.rotation.y = -s*.9; inner.rotation.x = s*.5;
+      ringA.rotation.z = s*.25; ringB.rotation.z = -s*.18;
+      pts.rotation.y = s*.03;
+      mails.forEach(m => { const d = m.userData, a = d.a + s*d.s;
+        m.position.set(Math.cos(a)*d.r, Math.sin(a)*d.r*.34*Math.cos(Math.PI/2.6)*2, Math.sin(a)*d.r*.7);
+        m.rotation.y = -a*.5; m.rotation.z = Math.sin(a)*.25; });
+      if(seal) seal.rotation.y = Math.sin(s*.6)*.35;
+    }
+    group.rotation.y += ((mx*.8) - group.rotation.y) * .05;
+    group.rotation.x += ((my*.5) - group.rotation.x) * .05;
+    renderer.render(scene, camera);
+  }
+  requestAnimationFrame(frame);
+}
+makeScene($('#bgstage'), $('#loginView'), {z:9});
+let appInited = false;
+function initApp(){
+  if(appInited) return; appInited = true;
+  makeScene($('#stage'), $('#stage').parentElement, {z:7.2, seal:true});
+  const d = store.get('nsmail_draft', null);
+  if(d){ $('#subject').value = d.s || ''; $('#editor').innerHTML = d.b || ''; $('#greet').checked = d.g !== false; }
+  updateMode(); renderTable(); boostTick(); boostRefresh(); setInterval(boostTick, 9000);
+}
+</script>
+</body>
+</html>
